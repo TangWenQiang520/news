@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.news.dao.news_detailMapper">
+    <select id="getdetailList" resultType="news_detail">
+        SELECT
+            `id`,
+            `categoryId`,
+            `title`,
+            `summary`,
+            `author`,
+            `createDate`,
+            `updateDate`
+        FROM
+            `news`.`news_detail`
+        <where>
+            <if test="title !='' and title != null">
+                and `title` LIKE CONCAT(CONCAT('%',#{title},'%'))
+            </if>
+            <if test="categoryId != null and categoryId != 0">
+                and `categoryId` = #{categoryId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getdetailByid" resultType="news_detail">
+        SELECT
+            `id`,
+            `categoryId`,
+            `title`,
+            `summary`,
+            `author`,
+            `createDate`,
+            `updateDate`
+        FROM
+            `news`.`news_detail`
+        where
+            `id` = #{id}
+    </select>
+
+    <select id="getcategoryList" resultType="news_category">
+        SELECT
+            `id`,
+            `name`
+        FROM
+            `news`.`news_category`
+    </select>
+
+    <select id="getdetailCountByid" resultType="int">
+        SELECT COUNT(*) FROM `news_detail` WHERE `title` = #{title}
+    </select>
+
+    <update id="updatedetailByid" parameterType="news_detail">
+        UPDATE
+            `news`.`news_detail`
+        SET
+            `id` = #{id},
+            `categoryId` = #{categoryId},
+            `title` = #{title},
+            `summary` = #{summary},
+            `author` = #{author},
+            `updateDate` = #{updateDate}
+        WHERE `id` = #{id};
+    </update>
+</mapper>
